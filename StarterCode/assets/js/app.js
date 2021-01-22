@@ -84,6 +84,18 @@ d3.csv("assets/js/data.csv").then(function (main_data) {
         .text(function (d) {
             return d.abbr;
         });
+    
+    chartGroup.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 0 - margin.left)
+      .attr("x", 0 - (height / 2))
+      .attr("dy", "1em")
+      .attr("class", "aText")
+      .text("Lacks Healthcare (%)");
+    chartGroup.append("text")
+      .attr("transform", `translate(${width / 2}, ${height + margin.top + 15})`)
+      .attr("class", "aText")
+      .text("In Poverty (%)");
 
 
 });
