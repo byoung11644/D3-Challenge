@@ -21,14 +21,15 @@ let svg = d3.select("#scatter")
     .attr("height", svgHeight);
 
 let chartGroup = svg.append("g")
-    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    .attr("transform", `translate(${margin.left}, ${margin.top})`)
+    .classed("chart", true);
 
 
 d3.csv("assets/js/data.csv").then(function (main_data) {
 
     console.log(main_data);
 
-    main_data.forEach(function(data) {
+    main_data.forEach(function (data) {
         data.poverty = +data.poverty;
         data.povertyMoe = +data.povertyMoe;
         data.age = +data.age;
@@ -42,7 +43,7 @@ d3.csv("assets/js/data.csv").then(function (main_data) {
         data.smokes = +data.smokes;
         data.smokesLow = +data.smokesLow;
         data.smokesHigh = +data.smokesHigh;
-      });
+    });
 
     let xScale = d3.scaleLinear()
         .domain([d3.min(main_data, d => d.poverty) - d3.max(main_data, d => d.povertyMoe), d3.max(main_data, d => d.poverty) + d3.max(main_data, d => d.povertyMoe)])
@@ -58,7 +59,7 @@ d3.csv("assets/js/data.csv").then(function (main_data) {
     chartGroup.append("g")
         .attr("transform", `translate(0, ${height})`)
         .call(bottomAxis);
-    
+
     chartGroup.append("g")
         .call(leftAxis);
 
@@ -69,6 +70,20 @@ d3.csv("assets/js/data.csv").then(function (main_data) {
         .attr("cx", d => xScale(d.poverty))
         .attr("cy", d => yScale(d.healthcare))
         .attr("r", "10")
-        .attr("fill", "teal")
-        .attr("opacity", ".65");
-    });
+        .classed("stateCircle", true)
+        .attr("opacity", ".8");
+
+    let stateLabels = circlesGroup.select("text")
+        .data(main_data)
+        .enter()
+        .append("text")
+        .attr("x", d => xScale(d.poverty))
+        .attr("y", d => yScale(d.healthcare))
+        .attr("dominant-baseline", "middle")
+        .classed("stateText", true)
+        .text(function (d) {
+            return d.abbr;
+        });
+
+
+});
