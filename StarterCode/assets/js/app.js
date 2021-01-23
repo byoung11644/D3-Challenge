@@ -28,7 +28,7 @@ let chosenXAxis = "poverty";
 
 function xChoice(main_data, chosenXAxis) {
     let xScale = d3.scaleLinear()
-        .domain([d3.min(main_data, d => d[chosenXAxis]) * 0.9, d3.max(main_data, d => d[chosenXAxis]) * 1.1])
+        .domain([d3.min(main_data, d => d[chosenXAxis]) * 0.95, d3.max(main_data, d => d[chosenXAxis]) * 1.05])
         .range([0, width]);
     return xScale;
 }
@@ -178,7 +178,7 @@ d3.csv("assets/js/data.csv").then(function (main_data, err) {
         .attr("transform", "rotate(-90)")
         .attr("y", 0 - margin.left)
         .attr("x", 0 - (height / 2))
-        .attr("dy", "1em")
+        .attr("dy", "4em")
         .classed("axis-text", true)
         .text("Lacks Healthcare (%)");
 
