@@ -51,6 +51,14 @@ function renderCircles(circlesGroup, newXScale, chosenXAxis) {
 
     return circlesGroup;
 }
+function renderStates(stateLabels, newXScale, chosenXAxis) {
+
+    stateLabels.transition()
+        .duration(1000)
+        .attr("x", d => newXScale(d[chosenXAxis]));
+
+    return stateLabels;
+}
 
 function updateToolTip(chosenXAxis, circlesGroup) {
 
@@ -65,9 +73,9 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 
     let toolTip = d3.tip()
         .attr("class", "td3-tip")
-        .offset([40, -30])
+        .offset([80, -60])
         .html(function (d) {
-            return (`${d.state}<br>${label}: ${d[chosenXAxis]}`);
+            return (`${d.state}<br>${label} ${d[chosenXAxis]}`);
         });
 
     circlesGroup.call(toolTip);
@@ -121,7 +129,6 @@ d3.csv("assets/js/data.csv").then(function (main_data, err) {
 
 
     let yAxis = chartGroup.append("g")
-        .attr("transform", "rotate(-90)")
         .attr("y", 0 - margin.left)
         .attr("x", 0 - (height / 2))
         .attr("dy", "1em")
@@ -155,7 +162,7 @@ d3.csv("assets/js/data.csv").then(function (main_data, err) {
         .classed("inactive", true)
         .text("Age (Median)");
 
-    let stateLabels = chartGroup.select("text")
+    let stateLabels = circlesGroup.select("text")
         .data(main_data)
         .enter()
         .append("text")
@@ -191,6 +198,8 @@ d3.csv("assets/js/data.csv").then(function (main_data, err) {
                 xAxis = renderAxes(xScale, xAxis);
 
                 circlesGroup = renderCircles(circlesGroup, xScale, chosenXAxis);
+
+                stateLabels = renderStates(stateLabels, xScale, chosenXAxis);
 
                 circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
 
